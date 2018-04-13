@@ -8,15 +8,28 @@ class Writer:
         self.content = json.loads(self.filecontent)
         self.works = [True,0,"File opened succesfully"]
       else:
-        self.works = [False,1,"File not in correct JSON format"]
+        self.works = [False,1,"File not in (correct) JSON format"]
         self.content = {}
     else:
-      self.works = [False,2,"Filename not found"]
-      self.content = {}
+      #self.works = [False,2,"Filename not found"]
+      open(filename, 'a').close()
+
+      file = open(filename, 'r+')
+      file.write('{}')
+      file.close()
+
+      self.jsonfile = open(filename, 'r+')
+      self.filecontent = self.jsonfile.read()
+      self.content = json.loads(self.filecontent)
+      self.works = [True,3,"File created and opened succesfully"]
+
 
   def writeValue(self,key,value):
     self.content[key] = value
     self.write(self.content)
+    
+  def alterContent(self,content):
+    self.content = content
 
   def write(self,content):
     #Write
